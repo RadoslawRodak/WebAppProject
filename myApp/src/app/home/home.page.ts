@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, InfiniteScrollCustomEvent,IonList,IonItem, IonSkeletonText, IonAvatar, IonAlert} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, InfiniteScrollCustomEvent,IonList,IonItem, IonSkeletonText, IonAvatar, IonAlert,IonLabel,IonBadge} from '@ionic/angular/standalone';
 import { MovieService } from '../services/movie.service';
 import { catchError, finalize } from 'rxjs';
 import { MovieResult } from '../services/interfaces';
+import { DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
@@ -10,15 +12,15 @@ import { MovieResult } from '../services/interfaces';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonSkeletonText, IonAvatar, IonAlert],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonSkeletonText, IonAvatar, IonAlert, IonLabel,DatePipe, RouterModule,IonBadge],
 })
 export class HomePage {
   private movieService = inject(MovieService);
   private currentPage = 1;
   public error = null;
   public isLoading = false;
-  private movies: MovieResult[] = [];
-  private imageBaseUrl = 'https://image.tmdb.org/t/p';
+  public movies: MovieResult[] = [];
+  public imageBaseUrl = 'https://image.tmdb.org/t/p';
   public dummyArray = new Array(5);
 
   constructor() {
