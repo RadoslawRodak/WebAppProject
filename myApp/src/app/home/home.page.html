@@ -1,8 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>
-      Top Movies
+      Trending
     </ion-title>
+    <ion-searchbar (ionInput)="searchMovies($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 

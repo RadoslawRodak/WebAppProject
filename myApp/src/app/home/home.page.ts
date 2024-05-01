@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, InfiniteScrollCustomEvent,IonList,IonItem, IonSkeletonText, IonAvatar, IonAlert,IonLabel,IonBadge, IonInfiniteScroll,IonInfiniteScrollContent} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, InfiniteScrollCustomEvent,IonList,IonItem, IonSkeletonText, IonAvatar, IonAlert,IonLabel,IonBadge, IonInfiniteScroll,IonInfiniteScrollContent, IonSearchbar,} from '@ionic/angular/standalone';
 import { MovieService } from '../services/movie.service';
 import { catchError, finalize } from 'rxjs';
 import { MovieResult } from '../services/interfaces';
@@ -7,12 +7,13 @@ import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonSkeletonText, IonAvatar, IonAlert, IonLabel,DatePipe, RouterModule,IonBadge,IonInfiniteScroll,IonInfiniteScrollContent],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonSkeletonText, IonAvatar, IonAlert, IonLabel,DatePipe, RouterModule,IonBadge,IonInfiniteScroll,IonInfiniteScrollContent,IonSearchbar],
 })
 export class HomePage {
   private movieService = inject(MovieService);
@@ -64,11 +65,27 @@ export class HomePage {
   loadMore(event: InfiniteScrollCustomEvent) {
     this.currentPage++;
     this.loadMovies(event);   
+  }  
+
+  searchMovies(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value;
+    if(query) {
+      this.movieService.searchMovies(query).subscribe({
+        next: (res) => {
+          this.movies = res.results;
+        },
+        error: (err) => {
+          console.log(err);
+          this.error = err.error.status_message;
+        }
+      });
+    } else {
+      this.loadMovies();
+    }
   }
  
-  }
+}
 
-  
   
 
 
