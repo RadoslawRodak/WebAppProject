@@ -1,7 +1,7 @@
 import { Component, WritableSignal, inject, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
-        IonIcon, IonItem, IonLabel, IonText} from '@ionic/angular/standalone';
+        IonIcon, IonItem, IonLabel, IonText, IonButton} from '@ionic/angular/standalone';
 import { MovieService } from '../services/movie.service';
 import { MovieResult } from '../services/interfaces';
 import {cashOutline, calendarOutline} from 'ionicons/icons';
@@ -14,7 +14,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
   styleUrls: ['./details.page.scss'],
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule,IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
-    IonIcon, IonItem, IonLabel, IonText, DatePipe, CurrencyPipe],
+    IonIcon, IonItem, IonLabel, IonText, DatePipe, CurrencyPipe, IonButton],
 })
 export class DetailsPage {
   private movieService = inject(MovieService);
@@ -30,11 +30,12 @@ export class DetailsPage {
     );
   }
 
+
+
   constructor() { 
     addIcons({cashOutline, calendarOutline});
   }
 
-  ngOnInit() {
-  }
+
 
 }
