@@ -1,3 +1,7 @@
+
+//interface was created by copying an object from browser and then using a json to ts converter
+
+//interface for the api result
 export interface ApiResult {
     page: number;
     results: MovieResult[];
@@ -5,6 +9,7 @@ export interface ApiResult {
     total_results: number;
   }
   
+  //interface for the movie result
   export interface MovieResult {
     adult: boolean
     backdrop_path: string

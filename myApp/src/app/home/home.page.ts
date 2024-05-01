@@ -24,21 +24,25 @@ export class HomePage {
   public isLoading = false;
   public movies: MovieResult[] = [];
   public imageBaseUrl = 'https://image.tmdb.org/t/p';
-  public dummyArray = new Array(5);
 
   constructor() {
-
+    //add the star icons
     addIcons({star, starOutline});
+
+    //load the trending movies
     this.loadMovies();
   }
 
+  //load the trending movies
   loadMovies(event?: InfiniteScrollCustomEvent) {
     this.error = null;
    
+    //show the loading spinner when the page is loading
     if(!event) {
       this.isLoading = true;
     }
 
+    //get the trending movies
     this.movieService.getTopRatedMovies(this.currentPage).pipe(
       finalize(() => {
         this.isLoading = false;
@@ -47,6 +51,8 @@ export class HomePage {
 
         }
       }),
+
+      //handle any errors that occur
       catchError((err: any) => {
         console.log(err);
         this.error = err.error.status_message;
@@ -54,6 +60,7 @@ export class HomePage {
       })
     ).subscribe(
       {
+        //add the movies to the list
         next: (res) => {
           console.log(res);
           this.movies.push(...res.results);
@@ -65,12 +72,13 @@ export class HomePage {
     )
   }
 
-
+  //load more movies when the user scrolls to the bottom of the page
   loadMore(event: InfiniteScrollCustomEvent) {
     this.currentPage++;
     this.loadMovies(event);   
   }  
 
+  //search for movies
   searchMovies(event: CustomEvent) {
     const query = (event.target as HTMLInputElement).value;
     if(query) {
@@ -86,9 +94,17 @@ export class HomePage {
     } else {
       this.loadMovies();
     }
+
+    //refresh the movies list when the search bar is cleared
+    if(!query) {
+    this.movies = [];
+    this.currentPage = 1;
+    this.loadMovies(); 
+    }  
+    }    
   }
  
-}
+
 
   
 

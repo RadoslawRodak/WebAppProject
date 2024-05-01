@@ -20,19 +20,23 @@ export class DetailsPage {
   private movieService = inject(MovieService);
   public imageBaseUrl = 'https://image.tmdb.org/t/p';
   public movie: WritableSignal<MovieResult | null> =signal(null);
+  tasks: any;
   
+  //get the movie id
   @Input()
   set id(movieId: string) {
+    //get the movie details 
     this.movieService.getMovieDetails(movieId).subscribe((movie) => {
       console.log(movie);
         this.movie.set(movie);
     }
     );
   }
-
+ 
 
 
   constructor() { 
+    //add the cash and calendar icons
     addIcons({cashOutline, calendarOutline});
   }
 

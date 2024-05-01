@@ -3,20 +3,16 @@
     <ion-buttons slot="start">
       <ion-back-button slot="start" defaultHref="/">       
       </ion-back-button>
+       <!--load movie title-->
       <ion-title>{{ movie()?.title }}</ion-title>
     </ion-buttons>
-    <ion-buttons slot="end">
-    <ion-button shape="round" fill="outline">
-      Add To Favourites
-      <ion-icon slot="end" name="star"></ion-icon>  
-    </ion-button>
-  </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   @if (movie(); as movie){
 <ion-card>
+   <!--load information for details page, title, tagline, poster, genres-->
   <div
   [style.height.px]="600"
   [style.backgroundImage]="'url(' + imageBaseUrl + '/w500' + movie.poster_path + ')'"></div>
@@ -30,6 +26,7 @@
     </ion-text>
   </ion-card-header>
 <ion-card-content>
+   <!--load information for details page, overwiew, release date and budget-->
   <ion-label color="medium">{{movie.overview }}></ion-label>
 
   <ion-item lines="none">
