@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  //api key for the movie database
   apiKey: 'd576dbfbbb99e3c532498123ea410ddb',
 };
 
