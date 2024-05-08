@@ -11,6 +11,15 @@ const API_KEY = environment.apiKey;
   providedIn: 'root'
 })
 export class MovieService {
+  save(query: string) {
+    throw new Error('Method not implemented.');
+  }
+  loadSearchQuery() {
+    throw new Error('Method not implemented.');
+  }
+  saveSearchQuery(query: string) {
+    throw new Error('Method not implemented.');
+  }
 
   //inject the HttpClient service
   private http = inject(HttpClient);

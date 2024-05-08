@@ -7,6 +7,9 @@ import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {addIcons} from 'ionicons';
 import { star, starOutline } from 'ionicons/icons';
+import { Browser } from '@capacitor/browser';
+import { Storage } from '@ionic/storage-angular';
+
 
 
 
@@ -15,7 +18,7 @@ import { star, starOutline } from 'ionicons/icons';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonSkeletonText, IonAvatar, IonAlert, IonLabel,DatePipe, RouterModule,IonBadge,IonInfiniteScroll,IonInfiniteScrollContent,IonSearchbar,IonIcon,IonButton, IonButtons],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonSkeletonText, IonAvatar, IonAlert, IonLabel,DatePipe, RouterModule,IonBadge,IonInfiniteScroll,IonInfiniteScrollContent,IonSearchbar,IonIcon,IonButton, IonButtons,],
 })
 export class HomePage {
   private movieService = inject(MovieService);
@@ -24,14 +27,60 @@ export class HomePage {
   public isLoading = false;
   public movies: MovieResult[] = [];
   public imageBaseUrl = 'https://image.tmdb.org/t/p';
+  public query: any[] = [];
 
-  constructor() {
+
+
+  constructor(private storage: Storage) {
     //add the star icons
     addIcons({star, starOutline});
+    
 
-    //load the trending movies
-    this.loadMovies();
+    //load the saved movies
+    this.load();
+
+    //load the trending movies if the storage is empty
+    if(!this.movies.length) {
+      this.loadMovies();
+    }
+
   }
+
+  async openBrowser() {
+    await Browser.open({ url: 'https://www.imdb.com/'
+    });
+    };
+
+    //load the saved search query
+    async load() {
+      await this.storage.create();
+      const query = await this.storage.get('query');
+      if(query) {
+        this.loadSearchQuery();
+      } else {
+        this.loadMovies();
+      }
+    }
+   
+   
+    //load the movies from the storage
+    async loadSearchQuery() {
+      const storage = await this.storage.create();
+      const storedFilms = await storage.get('query');
+
+      if(storedFilms) {
+        this.movies = storedFilms;
+      }
+      
+    }
+   
+  
+    //save the movies to the storage that showed after user typed in the search bar
+    async save() {
+      await this.storage.set('query', this.movies);
+    }
+    
+    
 
   //load the trending movies
   loadMovies(event?: InfiniteScrollCustomEvent) {
@@ -78,7 +127,8 @@ export class HomePage {
     this.loadMovies(event);   
   }  
 
-  //search for movies
+  //search for movies and save the search query
+  
   searchMovies(event: CustomEvent) {
     const query = (event.target as HTMLInputElement).value;
     if(query) {
@@ -90,7 +140,14 @@ export class HomePage {
           console.log(err);
           this.error = err.error.status_message;
         }
-      });
+
+      } );
+
+      //save the search query to the storage
+      this.save();
+
+
+
     } else {
       this.loadMovies();
     }
@@ -101,8 +158,13 @@ export class HomePage {
     this.currentPage = 1;
     this.loadMovies(); 
     }  
-    }    
-  }
+
+    //save the search query and store the search results
+    this.save();
+
+
+    }  
+}
  
 
 

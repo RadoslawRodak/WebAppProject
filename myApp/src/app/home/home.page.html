@@ -8,9 +8,13 @@
     <ion-buttons slot="primary" >
       <ion-button button [routerLink]="['/favourites']" shape="round" fill="outline">
         Top Rated
-        <ion-icon slot="end" name="star"></ion-icon>
+        <ion-icon slot="primary" name="star"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+    <ion-button slot="end" shape="round" fill="outline" (click)=
+              "openBrowser()">Open in Browser</ion-button>
+            </ion-buttons>
       </ion-toolbar> 
 </ion-header>
 
