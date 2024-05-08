@@ -31,18 +31,17 @@ export class HomePage {
 
 
 
+
   constructor(private storage: Storage) {
     //add the star icons
     addIcons({star, starOutline});
     
+    //load the search query
+    this.loadSearchQuery();
 
-    //load the saved movies
-    this.load();
+    
 
-    //load the trending movies if the storage is empty
-    if(!this.movies.length) {
-      this.loadMovies();
-    }
+    
 
   }
 
@@ -52,15 +51,6 @@ export class HomePage {
     };
 
     //load the saved search query
-    async load() {
-      await this.storage.create();
-      const query = await this.storage.get('query');
-      if(query) {
-        this.loadSearchQuery();
-      } else {
-        this.loadMovies();
-      }
-    }
    
    
     //load the movies from the storage
@@ -71,10 +61,16 @@ export class HomePage {
       if(storedFilms) {
         this.movies = storedFilms;
       }
+
+      //if the storage is empty, load the trending movies
+      if(storedFilms == 0) {
+        this.loadMovies();
+        console.log("Storage is empty");
+      }
       
     }
-   
-  
+
+    
     //save the movies to the storage that showed after user typed in the search bar
     async save() {
       await this.storage.set('query', this.movies);
@@ -130,6 +126,7 @@ export class HomePage {
   //search for movies and save the search query
   
   searchMovies(event: CustomEvent) {
+    //create the storage
     const query = (event.target as HTMLInputElement).value;
     if(query) {
       this.movieService.searchMovies(query).subscribe({
@@ -142,9 +139,6 @@ export class HomePage {
         }
 
       } );
-
-      //save the search query to the storage
-      this.save();
 
 
 
